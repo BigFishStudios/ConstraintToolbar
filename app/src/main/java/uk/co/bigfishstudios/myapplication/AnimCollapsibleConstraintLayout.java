@@ -9,27 +9,27 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 
-public class NoAnimCollapsibleConstraintLayout extends ConstraintLayout
+public class AnimCollapsibleConstraintLayout extends ConstraintLayout
     implements AppBarLayout.OnOffsetChangedListener {
 
-  private static final String TAG = NoAnimCollapsibleConstraintLayout.class.getSimpleName();
-  private float mTransitionThreshold = 0.35f;
-  private int mLastPosition = 0;
-  private boolean mToolbarOpen = true;
+  private static final String TAG = AnimCollapsibleConstraintLayout.class.getSimpleName();
+  private float transitionThreshold = 0.35f;
+  private int lastPosition = 0;
+  private boolean toolbarOpen = true;
 
-  private ConstraintSet mOpenToolbarSet = new ConstraintSet();
-  private ConstraintSet mCloseToolbarSet = new ConstraintSet();
+  private ConstraintSet openToolbarSet = new ConstraintSet();
+  private ConstraintSet closeToolbarSet = new ConstraintSet();
   private ConstraintLayout constraint;
 
-  public NoAnimCollapsibleConstraintLayout(Context context) {
+  public AnimCollapsibleConstraintLayout(Context context) {
     this(context, null);
   }
 
-  public NoAnimCollapsibleConstraintLayout(Context context, AttributeSet attrs) {
+  public AnimCollapsibleConstraintLayout(Context context, AttributeSet attrs) {
     this(context, attrs, 0);
   }
 
-  public NoAnimCollapsibleConstraintLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+  public AnimCollapsibleConstraintLayout(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
     LayoutInflater.from(getContext()).inflate(R.layout.open, this, true);
     constraint = findViewById(R.id.constraint);
@@ -42,8 +42,8 @@ public class NoAnimCollapsibleConstraintLayout extends ConstraintLayout
       Log.d(TAG, "Instance AppBarLayout");
       AppBarLayout appBarLayout = (AppBarLayout) getParent();
       appBarLayout.addOnOffsetChangedListener(this);
-      mOpenToolbarSet.clone(constraint);
-      mCloseToolbarSet.clone(getContext(), R.layout.close);
+      openToolbarSet.clone(constraint);
+      closeToolbarSet.clone(getContext(), R.layout.close);
     } else {
       Log.d(TAG, "Instance if Not Parent");
     }
@@ -52,25 +52,25 @@ public class NoAnimCollapsibleConstraintLayout extends ConstraintLayout
   @Override
   public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
     Log.d(TAG, "onOffsetChanged");
-    if (mLastPosition == verticalOffset) {
+    if (lastPosition == verticalOffset) {
       return;
     }
 
-    mLastPosition = verticalOffset;
+    lastPosition = verticalOffset;
     Float progress = (Math.abs(verticalOffset / (float) (appBarLayout.getHeight())));
 
     AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) getLayoutParams();
     params.topMargin = -verticalOffset;
     setLayoutParams(params);
     TransitionManager.beginDelayedTransition(constraint);
-    if (mToolbarOpen && progress > mTransitionThreshold) {
+    if (toolbarOpen && progress > transitionThreshold) {
       Log.d(TAG, "Apply close.xml");
-      mCloseToolbarSet.applyTo(constraint);
-      mToolbarOpen = false;
-    } else if (!mToolbarOpen && progress < mTransitionThreshold) {
+      closeToolbarSet.applyTo(constraint);
+      toolbarOpen = false;
+    } else if (!toolbarOpen && progress < transitionThreshold) {
       Log.d(TAG, "Apply open.xml");
-      mOpenToolbarSet.applyTo(constraint);
-      mToolbarOpen = true;
+      openToolbarSet.applyTo(constraint);
+      toolbarOpen = true;
     }
   }
 }

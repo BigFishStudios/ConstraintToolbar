@@ -31,7 +31,7 @@
       android:paddingEnd="24dp"
       android:paddingStart="24dp"
       android:paddingTop="8dp"
-      android:text="Mugello Circuit"
+      android:text="Open Title"
       android:textColor="#FFFF"
       android:textSize="45sp"
       app:layout_constraintRight_toLeftOf="parent"

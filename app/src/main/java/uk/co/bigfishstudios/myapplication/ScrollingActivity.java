@@ -11,45 +11,10 @@ import android.view.MenuItem;
 
 public class ScrollingActivity extends AppCompatActivity {
 
-  private AppBarLayout appBarLayout;
-  ConstraintSet open = new ConstraintSet();
-  ConstraintSet close = new ConstraintSet();
-  private ConstraintLayout constraint;
-  boolean state;
-  private NoAnimCollapsibleConstraintLayout noAnimCollapsibleConstraintLayout;
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_scrolling);
-
-    constraint = findViewById(R.id.constraint);
-    noAnimCollapsibleConstraintLayout = findViewById(R.id.root);
-    appBarLayout = findViewById(R.id.app_bar);
-
-    open.clone(constraint);
-    close.clone(this, R.layout.close);
-
-    appBarLayout.setOnClickListener(view -> {
-      //Transition transition = new ChangeBounds();
-      //transition.setInterpolator(new AnticipateOvershootInterpolator(1.0f));
-      //transition.setDuration(1000);
-      //TransitionManager.beginDelayedTransition(constraintLayout, transition);
-      if (state) {
-        Log.d("TEST", "open apply");
-
-        open.applyTo(constraint);
-      } else {
-        Log.d("TEST", "close apply");
-        close.applyTo(constraint);
-      }
-      state = !state;
-    });
-  }
-
-  @Override public void onAttachedToWindow() {
-    super.onAttachedToWindow();
-
   }
 
   @Override
