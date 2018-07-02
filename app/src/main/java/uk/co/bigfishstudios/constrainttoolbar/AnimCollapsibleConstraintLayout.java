@@ -7,7 +7,6 @@ import android.support.design.widget.AppBarLayout;
 import android.support.transition.TransitionManager;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.LayoutInflater;
 
 public class AnimCollapsibleConstraintLayout extends ConstraintLayout
     implements AppBarLayout.OnOffsetChangedListener {
@@ -31,8 +30,10 @@ public class AnimCollapsibleConstraintLayout extends ConstraintLayout
 
   public AnimCollapsibleConstraintLayout(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
-    LayoutInflater.from(getContext()).inflate(R.layout.open, this, true);
+    inflate(getContext(), R.layout.open, this);
     constraint = findViewById(R.id.constraint);
+    openToolbarSet.clone(constraint);
+    closeToolbarSet.clone(getContext(), R.layout.close);
   }
 
   @Override
@@ -42,8 +43,6 @@ public class AnimCollapsibleConstraintLayout extends ConstraintLayout
       Log.d(TAG, "Instance AppBarLayout");
       AppBarLayout appBarLayout = (AppBarLayout) getParent();
       appBarLayout.addOnOffsetChangedListener(this);
-      openToolbarSet.clone(constraint);
-      closeToolbarSet.clone(getContext(), R.layout.close);
     } else {
       Log.d(TAG, "Instance if Not Parent");
     }
